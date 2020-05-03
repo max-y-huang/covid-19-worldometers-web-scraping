@@ -13,14 +13,8 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 
 def formatDatemAsNumber(datem):
-
   datem = re.sub(r'[^\d.]+', '', datem) # Get rid of unnecessary characters.
-
-  if (datem == ''):
-    return 'N/A'
-  if ('.' in datem):
-    return float(datem)
-  return int(datem)
+  return 'N/A' if datem == '' else datem
 
 # Configure and start scraping.
 options = webdriver.ChromeOptions()
@@ -38,7 +32,7 @@ rows = tbody.findAll('tr', role='row')
 
 #####################################################
 
-# Create CSV header
+# Create CSV header.
 fieldNames = [
   'Country',
   'Total Cases',
