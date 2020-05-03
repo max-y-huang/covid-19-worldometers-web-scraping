@@ -1,1 +1,3 @@
-# covid-19-worldometers-web-scraping
+# COVID-19 Worldometer Web Scraping
+
+This program scrapes some COVID-19 data from worldometers.info/coronavirus and exports it as a CSV.
