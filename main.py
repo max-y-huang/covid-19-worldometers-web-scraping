@@ -26,6 +26,7 @@ def formatDatemAsNumber(datem):
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
 options.add_argument('window-size=1920x1080')
+options.add_argument('log-level=3')
 driver = webdriver.Chrome(options=options)  # chromedriver.exe must be located in PythonXX/Scripts.
 driver.get('https://www.worldometers.info/coronavirus/')
 
@@ -47,8 +48,8 @@ fieldNames = [
   'Total Tests',
   'Total Tests per Million'
 ]
-output = open('output.csv', 'w', newline='')
-writer = csv.DictWriter(output, fieldnames=fieldNames)
+outputFile = open('output.csv', 'w', newline='')
+writer = csv.DictWriter(outputFile, fieldnames=fieldNames)
 writer.writeheader()
 
 # Loop through rows.
@@ -79,3 +80,6 @@ for r in rows:
   for i in range(len(fieldNames)):
     entry[fieldNames[i]] = fieldValues[i]
   writer.writerow(entry)
+
+outputFile.close()
+print('\nExported data to output.csv!')
