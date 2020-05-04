@@ -7,25 +7,45 @@
 | and exports it as a CSV.
 ==========================================================================="""
 
-import csv
-import re
+import os, time, csv, re, colorama
 from bs4 import BeautifulSoup
 from selenium import webdriver
+colorama.init()
+
+# Terminal colours.
+class tc:
+
+  useColour = True
+  
+  PURPLE = '\033[95m' if useColour else ''
+  BLUE   = '\033[94m' if useColour else ''
+  GREEN  = '\033[92m' if useColour else ''
+  YELLOW = '\033[93m' if useColour else ''
+  RED    = '\033[91m' if useColour else ''
+  WHITE  = '\033[0m'  if useColour else ''
 
 def formatDatemAsNumber(datem):
-  datem = re.sub(r'[^\d.]+', '', datem) # Get rid of unnecessary characters.
+  datem = re.sub(r'[^\d.]+', '', datem)  # Get rid of unnecessary characters.
   return 'N/A' if datem == '' else datem
+  
+print(f'{tc.PURPLE}*================================================================*')
+print('| COVID-19 WORLDOMETERS WEB SCRAPING                             |')
+print('|                                                                |')
+print('| Scrapes COVID-19 data from worldometers.info/coronavirus and   |')
+print('| exports it as a CSV.                                           |')
+print(f'*================================================================*{tc.WHITE}')
 
-# Configure and start scraping.
+# Configure webdriver and read website.
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
 options.add_argument('window-size=1920x1080')
 options.add_argument('log-level=3')
 driver = webdriver.Chrome(options=options)  # chromedriver.exe must be located in PythonXX/Scripts.
 driver.get('https://www.worldometers.info/coronavirus/')
+soup = BeautifulSoup(driver.page_source, 'html.parser')
+driver.quit()
 
 # Find data table.
-soup = BeautifulSoup(driver.page_source, 'html.parser')
 table = soup.find(id='main_table_countries_today')
 tbody = table.findAll('tbody')[0]
 rows = tbody.findAll('tr', role='row')
@@ -76,4 +96,17 @@ for r in rows:
   writer.writerow(entry)
 
 outputFile.close()
-print('\nExported data to output.csv!')
+
+# User feedback after writing CSV.
+print(tc.GREEN)
+print(f'Exported data to output.csv!')
+print(tc.WHITE)
+print(f'Open output.csv? (y/n){tc.BLUE}')
+openFile = input(f' > ')
+
+if openFile == 'y':
+  os.startfile('output.csv')
+
+print(tc.WHITE)
+print('Closing...')
+time.sleep(1)
