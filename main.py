@@ -80,13 +80,13 @@ for r in rows:
   
   # Get entry values.
   fieldValues = [
-    cols[0].text.strip(),
-    formatDatemAsNumber(cols[1].text),
-    formatDatemAsNumber(cols[8].text),
-    formatDatemAsNumber(cols[3].text),
+    cols[1].text.strip(),
+    formatDatemAsNumber(cols[2].text),
     formatDatemAsNumber(cols[9].text),
+    formatDatemAsNumber(cols[4].text),
     formatDatemAsNumber(cols[10].text),
-    formatDatemAsNumber(cols[11].text)
+    formatDatemAsNumber(cols[11].text),
+    formatDatemAsNumber(cols[12].text)
   ]
 
   # Write row to CSV.
